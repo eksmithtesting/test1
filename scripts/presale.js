@@ -13,6 +13,12 @@ document.addEventListener('DOMContentLoaded', function () {
         userContributions.remove();
         presaleButton.remove();
     }
+    if (!isWalletConnected) {
+        generateReferralLinkButton.childNodes[0].nodeValue = 'Please Connect a Wallet';
+        if (isWalletEnabled) {
+            getUserContributions();
+        }
+    }
     if (presaleStatus === "The presale has concluded.") {
         updatePresaleTimer();
         return;
@@ -26,6 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
 document.addEventListener('walletConnected', function () {
     if (generateReferralLinkButton != null && isReferralEnabled) {
         generateReferralLinkButton.addEventListener('click', generateReferralLink);
+        generateReferralLinkButton.childNodes[0].nodeValue = 'Generate Referral Link';
     }
 
     getUserContributions();
@@ -34,7 +41,7 @@ document.addEventListener('walletDisconnected', function () {
     if (generateReferralLinkButton != null && isReferralEnabled) {
         generateReferralLinkButton.disabled = true;
         generateReferralLinkButton.removeEventListener('click', generateReferralLink);
-        generateReferralLinkButton.textContent = 'No Wallet Connected';
+        generateReferralLinkButton.childNodes[0].nodeValue = 'No Wallet Connected';
     }
 });
 
@@ -100,7 +107,7 @@ async function getUserContributions() {
                 const data = await response.json();
                 if (data.result && data.result.transfers) {
                     const totalContributionInWei = data.result.transfers.reduce((sum, transfer) => {
-                        const valueInWei = BigInt(parseFloat(transfer.value) * 1e18); 
+                        const valueInWei = BigInt(parseFloat(transfer.value) * 1e18);
                         return sum + valueInWei;
                     }, BigInt(0));
 
@@ -533,8 +540,8 @@ async function populateReferralAddress() {
             referrerAddress = await resolveENSName(referrerAddress);
             if (referrerAddress === null) {
                 showAlert('alert', 'Could not resolve ENS to a valid Ethereum address. Reloading the page and removing referral link...', {
-                        dismissTime: 5000
-                    });
+                    dismissTime: 5000
+                });
                 // Remove the 'ref' parameter and reload the page
                 urlParams.delete('ref');
 
@@ -558,11 +565,11 @@ async function populateReferralAddress() {
                 return;
             }
         }
-        
+
         referralLink.value = referrerAddress;
 
         console.log("Populating hidden referral input field with address:", referrerAddress);
-        
+
         // Populate the input fields with the referral address so that it can be captured
         presaleReferralInputfield.value = 'Referral: ' + truncateAddress(referrerAddress, 8);
         buyReferralInputfield.value = 'Referral: ' + truncateAddress(referrerAddress, 8);
@@ -587,27 +594,27 @@ async function generateReferralLink() {
 
         window.ethereum.request({ method: 'eth_requestAccounts' }).then(async accounts => {
             const referrerAddress = accounts[0];
-            let referralLink;
+            let actualReferralLink;
 
             // Check if the referrer address resolves to an ENS
             const ensName = await resolveAddressToENS(referrerAddress);
 
             if (ensName) {
                 // If an ENS is found, use it in the referral link
-                referralLink = `${window.location.origin}?ref=${ensName}`;
+                actualReferralLink = `${window.location.origin}?ref=${ensName}`;
             } else {
                 // Otherwise, use the original wallet address
-                referralLink = `${window.location.origin}?ref=${referrerAddress}`;
+                actualReferralLink = `${window.location.origin}?ref=${referrerAddress}`;
 
                 // Contextually reveal the basename sign-up process
                 ensContextualClaim();
             }
 
-            console.log("Generated Referral Link:", referralLink);
+            console.log("Generated Referral Link:", actualReferralLink);
 
             // Copy the referral link to the clipboard
-            navigator.clipboard.writeText(referralLink).then(() => {
-                showAlert('info', 'Referral link: ' + referralLink + ' - copied to clipboard!');
+            navigator.clipboard.writeText(actualReferralLink).then(() => {
+                showAlert('info', 'Referral link: ' + actualReferralLink + ' - copied to clipboard!');
             }).catch(err => {
                 console.error('Failed to copy referral link: ', err);
             });
@@ -616,7 +623,13 @@ async function generateReferralLink() {
             referralLoader.style.display = 'none';
 
             generateReferralLinkButton.childNodes[0].nodeValue = 'Link Copied to Clipboard!';
-            await new Promise(resolve => setTimeout(resolve, 5000));
+
+            referralLink.value = actualReferralLink;
+            referralLink.style.display = 'block';
+
+            await new Promise(resolve => setTimeout(resolve, 10000));
+
+            referralLink.style.display = 'none';
 
             // Restore the button text
             generateReferralLinkButton.childNodes[0].nodeValue = 'Generate Referral Link';
@@ -631,7 +644,6 @@ function ensContextualClaim() {
     const ensNames = [
         '0xhappy.base.eth',
         'tukyo.base.eth',
-        'barmstrong.base.eth',
         'jesse.base.eth',
         'vitalik.base.eth',
         'satoshi.base.eth',
@@ -639,8 +651,9 @@ function ensContextualClaim() {
         'apollo69.base.eth',
         'd0gecoin.base.eth',
         'four.base.eth',
-        'wilsoncusack.base.eth',
-        'butterfly.base.eth',
+        'wagmi.base.eth',
+        'm00n.base.eth',
+        'hodl.base.eth',
     ];
 
     setInterval(() => {

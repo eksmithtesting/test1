@@ -164,6 +164,9 @@ header, footer {
     border-radius: 0;
     z-index: 1000;
     text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     animation: alert .5s ease-in-out forwards;
 }
 .alert-info {
@@ -324,6 +327,12 @@ header, footer {
 }
 #referral-link-value {
     display: none;
+    margin: 0 auto;
+    width: 90%;
+    background-color: #4a4e53b6;
+    color: var(--font-color);
+    cursor: text;
+    animation: tvScreenOn 0.5s cubic-bezier(0.77, 0, 0.2, 1) forwards;
 }
 #ens-prompt {
     display: none;
@@ -541,6 +550,9 @@ header, footer {
         align-self: center;
         max-height: 210px;
     }
+    .leaderboard-item > span {
+        font-size: clamp(10px, 1vw, 16px);
+    }
     #total-contributions {
         text-align: center;
     }
@@ -554,9 +566,6 @@ header, footer {
     }
     #leaderboard-header {
         font-size: clamp(10px, 1.25vw, 18px);
-    }
-    .leaderboard-item > span {
-        font-size: clamp(8px, 1vw, 12px);
     }
 }
 /* #endregion Responsive Design */
