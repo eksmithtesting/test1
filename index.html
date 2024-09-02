@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Apollo69 • Presale</title>
+
+  <!-- #region Favicon -->
+  <link rel="icon" sizes="16x16" type="image/png" href="assets/favicon-16x16.png">
+  <link rel="icon" sizes="32x32" type="image/png" href="assets/favicon-32x32.png">
+  <link rel="icon" sizes="96x96" type="image/png" href="assets/favicon-96x96.png">
+  <!-- #endregion Favicon -->
+
+  <!-- #region Meta Tags -->
+  <meta property="og:url" content="https://apollobase.co/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="apollobase.co">
+  <meta property="og:description"
+    content="Join the limited Apollo69 presale before time runs out!">
+  <meta property="og:image:type" content="image/webp">
+  <meta property="og:image" content="assets/preview_image.webp">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="twitter:domain" content="apollobase.co">
+  <meta property="twitter:url" content="https://apollobase.co/">
+  <meta name="twitter:title" content="Apollo69">
+  <meta name="twitter:description"
+    content="Join the limited Apollo69 presale before time runs out!">
+  <meta name="twitter:image" content="assets/preview_image.webp">
+  <meta name="twitter:site" content="@Apollo69onbase">
+  <meta name="twitter:creator" content="@Apollo69onbase">
+
+  <meta name="robots" content="index, follow">
+
+  <meta name="description" content="Apollo69 is a meme project that focuses on deep lore, high quality graphical assets and much more on the Base chain.">
+  <!-- #endregion Meta Tags -->
+
+  <link rel="canonical" href="https://apollobase.co/">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.4-rc.1/web3.min.js"></script>
+  <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@alch/alchemy-web3@latest/dist/alchemyWeb3.min.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
+</head>
+
+<body>
+  <header class="container">
+    <div class="header-logo">
+      <img src="assets/logo.png" id="logo-img">
+    </div>
+
+    <nav id="nav">
+      <a href="#">Loading...</a>
+      <a href="#">Loading...</a>
+      <a href="#">Loading...</a>
+
+      <button id="connect-wallet-button"></button>
+    </nav>
+
+    <button class="hamburger-menu" id="hamburger-button">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+  </header>
+
+  <div id="alert" class="alert">
+    <span id="alert-message" class="alert-message">Loading...</span>
+    <div id="alert-buttons" class="alert-buttons" style="display: none;">
+      <button id="alert-details-button" class="alert-button">View on Explorer</button>
+      <button id="alert-close-button" class="alert-button">Close</button>
+    </div>
+  </div>
+
+  <main>
+    <section id="hero">
+      <video autoplay loop muted playsinline>
+        <source src="assets/hero_video.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </section>
+
+    <section id="presale" class="container">
+      <h2>PRESALE</h2>
+      <p>Apollo's fair launch allows contributions to exceed the hard cap of 200 ETH. This results in tokens distributed proportionally as a function of oversubscription percentage with extra ETH refunded to contributors of the sale.</p>
+      <p>Example: An investor contributes 1 ETH and the final raise equals 400 ETH. This represents a 100% or 2x oversubscribed sale. Therefore 0.5 ETH is refunded to that investor and 0.5 ETH is contributed for $APOLLO tokens.</p>
+      <div id="total-contributions">Loading...</div>
+      <div id="user-contributions">Loading...</div>
+      <button id="presale-button">Contribute</button>
+      <div id="presale-contribution-input-container" class="contribution-container">
+        <p class="contribution-range"></p>
+        <input type="number" id="presale-contribution-input" class="contribution-input" placeholder="Enter Contribution"min="0" max="100"></input>
+        <div class="input-container-buttons">
+          <button class="confirm-button" id="presale-contribution-confirm-button">Confirm<div class="loader"id="presale-loader"></div></button>
+          <button class="cancel-button" id="presale-contribution-cancel-button">Cancel</button>
+        </div>
+        <input type="text" id="presale-referral-input" class="referral-input"placeholder="Loading..."></input>
+      </div>
+      <div id="percentage">Loading...</div>
+      <div id="progress-bar" class="bar-fill">
+        <div id="progress-bar-fill" class="bar-fill"></div>
+      </div>
+      <div id="presale-timer">Loading...</div>
+    </section>
+
+    <section id="referrals" class="container">
+      <div>
+        <h2>REFERRALS</h2>
+        <p>For each person referred to the presale who contributes to the sale, a single point is given to the referrer. Once the sale has ended, all the points from all users are tallied and then referral rewards are distributed as a percentage of how many points a user has to the total number of points achieved in the sale.</p>
+        <p>EXAMPLE: If there is a total of 100 points collected during the presale and an individual user receives 5 points, then this user receives 5/100 = 5% of the total referral rewards.</p>
+        <button id="generate-referral-link-button">Generate Referral Link<div class="loader" id="referral-loader"></div></button>
+        <input type="text" id="referral-link-value"></input>
+      </div>
+    </section>
+
+    <section id="ens-prompt" class="container">
+      <div>
+        <img src="https://raw.githubusercontent.com/base-org/brand-kit/main/logo/wordmark/Base_Wordmark_White.png" id="base-logo"></img>
+        <p>We noticed that the referral link you generated did not resolve to an ENS domain. If you would like to get a shorter referral link, we recommend setting up a Basename!</p>
+        <p>Please click the button below to be redirected and claim your Basename.</p>
+        <button id="ens-button">Loading...</button>
+      </div>
+    </section>
+
+    <section id="leaderboard" class="container">
+      <div>
+        <h2>LEADERBOARD</h2>
+        <p>This list displays the top contributors to the presale.</p>
+      </div>
+      <div id="leaderboard-container">
+        <div id="leaderboard-header">
+          <span class="header-position">Position</span>
+          <span class="header-wallet">Address</span>
+          <span class="header-amount">Contribution</span>
+          <span class="header-points">Points</span>
+        </div>
+        <div id="leaderboard-list" class="scrollable-list">Loading...</div>
+      </div>
+    </section>
+    
+
+    <section id="about">
+      <div>
+        <h2>ABOUT</h2>
+        <p id="description-paragraph-0"></p>
+        <p id="description-paragraph-1"></p>
+      </div>
+      <div class="container">
+        <img src="assets/image_1.jpg">
+        <p id="about-image-paragraph"></p>
+      </div>
+    </section>
+
+    <section id="buy" class="container">
+      <div>
+        <p>
+        <h2 id="project-title-value"></h2>
+        </p>
+        <p id="buy-description-paragraph"></p>
+      </div>
+
+      <div id="buy-right-split">
+        <p id="contract-address-value"></p>
+        <button id="buy-button"></button>
+        <div id="buy-contribution-input-container" class="contribution-container">
+          <p class="contribution-range"></p>
+          <input type="number" id="buy-contribution-input" class="contribution-input" placeholder="Enter Contribution"min="0" max="100"></input>
+          <div class="input-container-buttons">
+            <button class="confirm-button" id="buy-contribution-confirm-button">Confirm<div class="loader"id="buy-loader"></div></button>
+            <button class="cancel-button" id="buy-contribution-cancel-button">Cancel</button>
+          </div>
+          <input type="text" id="buy-referral-input" class="referral-input"placeholder="Loading..."></input>
+        </div>
+      </div>
+    </section>
+
+    <section id="tokenomics">
+      <div id="tokenomics-image-container">
+        <img src="assets/image_2.jpg">
+      </div>
+      <div>
+        <h2>TOKENOMICS</h2>
+        <h3>SUPPLY</h3>
+        <p id="total-supply-value"></p>
+        <hr>
+        <h3>LP</h3>
+        <p id="lp-value"></p>
+        <hr>
+        <h3>TAXES</h3>
+        <p id="tax-value"></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="container">
+    <div class="footer-logo">
+      <img src="assets/logo_alt.png">
+    </div>
+    <div>
+      <p>All rights reserved</p>
+    </div>
+    <nav>
+      <a href="#" alt="Twitter Icon Link" target="_blank" class="social-icon"><i class="fab fa-twitter"
+          id="twitter-icon"></i></a>
+      <a href="#" alt="Telegram Icon Link" target="_blank" class="social-icon"><i class="fab fa-telegram"
+          id="telegram-icon"></i></a>
+      <a href="#" alt="Discord Icon Link" target="_blank" class="social-icon"><i class="fab fa-discord"
+          id="discord-icon"></i></a>
+      <a href="#" alt="Github Icon Link" target="_blank" class="social-icon"><i class="fab fa-github"
+          id="github-icon"></i></a>
+      <a href="#" alt="Extra Icon Link" target="_blank" class="social-icon"><i class="fa-solid fa-globe"
+          id="extra-icon"></i></a>
+    </nav>
+  </footer>
+
+  <script src="scripts/alert.js"></script>
+  <script src="scripts/projectdetails.js"></script>
+  <script src="scripts/wallet.js"></script>
+  <script src="scripts/presale.js"></script>
+  <script src="scripts/leaderboard.js"></script>
+
+  <script type="application/ld+json">
+      {
+	  "@context": "http://schema.org",
+	  "@type": "Crypto",
+	  "name": "Apollo69",
+	  "description": "Apollo69 is a meme project that focuses on deep lore, high quality graphical assets and much more on the Base chain.",
+	  "image": [
+              "https://apollobase.co/presale.html/assets/image_1.jpg"
+	  ],
+	  "publisher": {
+              "@type": "Organization",
+              "name": "TUKYO GAMES"
+	  }
+      }
+    </script>
+</body>
+<!-- Script Framework Developed by Tukyo Games -->
+
+</html>
